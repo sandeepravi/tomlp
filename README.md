@@ -4,7 +4,8 @@ TOMLp is a library to parse the [TOML configuration format](https://github.com/m
 
 It has a fairly exhaustive test coverage and is compliant with the latest revision of TOML specifications.
 
-_**This is not yet production ready.**_
+_**You can use this in production.**_ Some extreme cases are yet to be
+handled though. Don't hesitate to report if you come across an error.
 
 ## Installation
 
