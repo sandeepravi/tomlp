@@ -1,0 +1,135 @@
+grammar Toml
+
+  rule body
+    ( key_groups / key_value / comment_line / end_of_line )+ <Body>
+  end
+
+  ##################
+  # Key groups
+
+  rule key_groups
+    space? '[' key_name ']' end_of_line <KeyGroup>
+  end
+
+  rule key_value_list
+    key_value+ <KeyValueList>
+  end
+
+  ##################
+  # Key values
+
+  rule key_value
+    space? identifier space? assignment_operator space? value (comment / end_of_line) <KeyValue>
+  end
+
+  rule key_name
+    identifier ('.' identifier)* <KeyName>
+  end
+
+  rule value
+    primitive / array
+  end
+
+  ##################
+  # Primitives
+
+  rule primitive
+    float / datetime / boolean / integer / string
+  end
+
+  rule boolean
+    true / false
+  end
+  
+  rule integer
+    ('+' / '-')? [0-9]+ <IntegerLiteral>
+  end
+  
+  rule float
+    ('+' / '-')? [0-9]+ '.' [0-9]+ <FloatLiteral>
+  end
+  
+  rule string
+    '"' ([^"\\] / "\\" . )* '"' <StringLiteral>
+  end
+
+  rule identifier
+    '$'? [a-zA-Z] [a-zA-Z0-9_]* ('?' / '!')? <Identifier>
+  end
+
+  ##################
+  # Array
+
+  rule array
+    '[' array_break (value array_break ',' array_break )* value array_break ']' <ArrayDS>
+  end
+
+  rule array_break
+    (space? / end_of_line?)
+  end
+
+  ##################
+  # Boolean
+
+  rule true
+    "true" <TrueLiteral>
+  end
+  
+  rule false
+    "false" <FalseLiteral>
+  end
+
+  ##################
+  # DateTime
+
+  rule datetime
+    date 'T' time 'Z' <DateTime>
+  end
+
+  rule date
+    [0-9]4..4 '-' [0-9]2..2 '-' [0-9]2..2
+  end
+
+  rule time
+    [0-9]2..2 ':' [0-9]2..2 ':' [0-9]2..2
+  end
+
+  ##################
+  # Operators
+
+  rule assignment_operator
+    '=' <AssignmentOperator>
+  end
+
+  ##################
+  # Comments
+  
+  rule comment_line
+    comment ( "\n" / end_of_file )
+  end
+
+  rule comment
+    space? '#' [^"\n"]*
+  end
+  
+  ##################
+  # Whitespace
+  
+  rule space
+    [\s]+
+  end
+
+  ##################
+  # End of line
+  
+  rule end_of_line
+    ["^\n"]
+  end
+  
+  ##################
+  # End of file
+  
+  rule end_of_file
+    !.
+  end
+end

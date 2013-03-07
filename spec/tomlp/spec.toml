@@ -1,0 +1,39 @@
+# Global
+
+specification = "TOML"
+
+string = "This is a string."
+
+number = 38
+
+float = 0.57721
+
+true = true
+false = false #comment at the end of a line
+
+datetime = 1988-05-28T00:00:00Z
+
+array = [1,2,3]
+
+# Keygroups
+[integer]
+positive = 38
+negative = -38
+
+[arrays]
+normal = ["a","b", "c"]
+multi = [[1,2], 100, 20]
+break = [
+          "first",
+          "second",
+          "third"
+        ]
+
+# Nested Keygroups in one line
+[key.group]
+value = 1
+
+# Nested keygroups
+[keygroup]
+  [keygroup.nested]
+  new_value = 12
